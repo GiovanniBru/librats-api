@@ -1,6 +1,6 @@
-package repository;
+package org.librats.repository;
 
-import model.Competition;
+import org.librats.model.Competition;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

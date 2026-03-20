@@ -1,8 +1,8 @@
-package service;
+package org.librats.service;
 
-import model.Competition;
-import model.ReadingLog;
-import repository.ReadingLogRepository;
+import org.librats.model.Competition;
+import org.librats.model.ReadingLog;
+import org.librats.repository.ReadingLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,14 +33,14 @@ public class RankingService {
                 totalPoints += log.getPagesRead() * competition.getPointsPerPage();
 
                 // Regra 2: Pontos fixos por dia logado (se leu algo, ganha o fixo)
-                if (log.getPagesRead() > 0 || log.isBookFinished()) {
-                    totalPoints += competition.getPointsPerDayLogged();
-                }
+                //if (log.getPagesRead() > 0 || log.isBookFinished()) {
+                //    totalPoints += competition.getPointsPerDayLogged();
+                //}
 
                 // Regra 3: Bônus por finalizar livro
-                if (log.isBookFinished()) {
-                    totalPoints += competition.getCompletedBookBonus();
-                }
+                //if (log.isBookFinished()) {
+                //    totalPoints += competition.getCompletedBookBonus();
+                //}
             }
         }
 
