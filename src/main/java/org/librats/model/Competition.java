@@ -3,6 +3,7 @@ package org.librats.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "competitions")
@@ -25,6 +26,15 @@ public class Competition {
     private int finishBookBonus;
     private int pointsPerDayLogged;   // Gera o getPointsPerDayLogged()
     private int completedBookBonus;   // Gera o getCompletedBookBonus()
+
+    // Este é o "elo" que estava faltando para o getParticipants() funcionar
+    @ManyToMany
+    @JoinTable(
+            name = "competition_participants",
+            joinColumns = @JoinColumn(name = "competition_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> participants;
 
     // Construtor padrão para o JPA
     public Competition() {}

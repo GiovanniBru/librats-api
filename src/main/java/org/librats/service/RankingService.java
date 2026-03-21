@@ -1,5 +1,7 @@
 package org.librats.service;
 
+import org.librats.dto.RankingDTO;
+import org.librats.model.User;
 import org.librats.model.Competition;
 import org.librats.model.ReadingLog;
 import org.librats.repository.ReadingLogRepository;
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RankingService {
@@ -41,9 +44,29 @@ public class RankingService {
                 //if (log.isBookFinished()) {
                 //    totalPoints += competition.getCompletedBookBonus();
                 //}
+                // No método logReading:
+                if (Boolean.TRUE.equals(log.getFinished())) { // O Lombok gera getFinished() ou isFinished()
+                    totalPoints += competition.getCompletedBookBonus();
+                }
             }
         }
 
         return totalPoints;
+    }
+
+    public List<RankingDTO> getCompetitionRanking(Competition competition) {
+        // Pegamos todos os usuários daquela competição
+        List<User> participants = competition.getParticipants();
+
+        return participants.stream()
+                .map(user -> {
+                    Integer points = readingLogRepository.sumPointsByUserAndCompetition(user, competition);
+                    // Se o usuário não tiver logs, a soma volta null, então tratamos para 0
+                    int totalPoints = (points != null) ? points : 0;
+                    return new RankingDTO(user.getDisplayName(), totalPoints, 0L);
+                })
+                // Ordena do maior para o menor ponto
+                .sorted((u1, u2) -> u2.getTotalPoints().compareTo(u1.getTotalPoints()))
+                .collect(Collectors.toList());
     }
 }

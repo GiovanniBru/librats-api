@@ -28,7 +28,7 @@ public class ReadingLog {
     private Integer pagesRead;
     private Integer minutesRead;
 
-    private Boolean bookFinished;
+    private Boolean finished;
     private String comment;
     private String photoUrl; // Para a foto que você planejou
 

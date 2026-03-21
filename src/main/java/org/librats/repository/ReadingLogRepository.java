@@ -30,7 +30,7 @@ public interface ReadingLogRepository extends JpaRepository<ReadingLog, Long> {
      * Estamos usando JPQL (Java Persistence Query Language).
      */
     @Query("SELECT SUM( (rl.pagesRead * c.pointsPerPage) + c.pointsPerSession + " +
-            "CASE WHEN rl.bookFinished = true THEN c.completedBookBonus ELSE 0 END ) " + // Ajustado aqui
+            "CASE WHEN rl.finished = true THEN c.completedBookBonus ELSE 0 END ) " + // Ajustado aqui
             "FROM ReadingLog rl JOIN rl.competition c " +
             "WHERE rl.user = :user AND rl.competition = :competition")
     Integer sumPointsByUserAndCompetition(@Param("user") User user,
