@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 @Repository
@@ -24,6 +23,8 @@ public interface ReadingLogRepository extends JpaRepository<ReadingLog, Long> {
 
     // Busca os últimos logs do usuário para sugerir livros rápidos
     List<ReadingLog> findByUserOrderByLogDateDesc(User user);
+
+    List<ReadingLog> findByUserIdOrderByLogDateDesc(Long userId);
 
     /**
      * Esta consulta soma os pontos do usuário em uma competição específica.

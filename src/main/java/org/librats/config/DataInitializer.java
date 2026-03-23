@@ -33,8 +33,10 @@ public class DataInitializer implements CommandLineRunner {
 
         // 1. Criar Livros de Exemplo
         Book b1 = new Book("O Hobbit", "J.R.R. Tolkien", 310, "Fiction");
+        b1.setTags(List.of("Fantasia"));
+        bookRepository.save(b1);
         Book b2 = new Book("Código Limpo", "Robert C. Martin", 464, "Education");
-        bookRepository.saveAll(Arrays.asList(b1, b2));
+        bookRepository.save(b2);
 
         // 2. Criar Usuários (Para o Ranking)
         User u1 = new User("giovanni", "senha123", "giovanni@email.com");

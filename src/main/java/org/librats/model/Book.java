@@ -2,6 +2,7 @@ package org.librats.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.List;
 
 @Entity
 @Table(name = "books")
@@ -36,4 +37,9 @@ public class Book {
 
         return basePoints;
     }
+
+    @ElementCollection
+    @CollectionTable(name = "book_tags", joinColumns = @JoinColumn(name = "book_id"))
+    @Column(name = "tag")
+    private List<String> tags;
 }
