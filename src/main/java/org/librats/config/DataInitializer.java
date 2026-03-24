@@ -5,6 +5,7 @@ import org.librats.repository.*;
 import org.librats.service.ReadingLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -26,6 +27,9 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private ReadingLogService readingLogService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -38,9 +42,10 @@ public class DataInitializer implements CommandLineRunner {
         Book b2 = new Book("Código Limpo", "Robert C. Martin", 464, "Education");
         bookRepository.save(b2);
 
-        // 2. Criar Usuários (Para o Ranking)
-        User u1 = new User("giovanni", "senha123", "giovanni@email.com");
+        // No método run:
+        User u1 = new User("giovanni", passwordEncoder.encode("123"), "gio@email.com");
         u1.setDisplayName("Giovanni Carvalho");
+        userRepository.save(u1);
 
         User u2 = new User("leitora_vip", "senha456", "namorada@email.com");
         u2.setDisplayName("Leitora VIP ✨");
