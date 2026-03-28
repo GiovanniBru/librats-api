@@ -37,4 +37,6 @@ public class ReadingLog {
     public ReadingLog() {
         this.logDate = LocalDateTime.now();
     }
+
+    private Integer pointsEarned = 0; // Para salvar quantos pontos esse log rendeu
 }

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ranking - LibRats</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f9; padding: 20px; }
+        .rank-card { background: white; margin: 10px 0; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .first { border-left: 5px solid #ffd700; background: #fffdf0; } /* Dourado para o 1º */
+        .points { font-weight: bold; color: #6200ee; font-size: 1.2em; }
+        .medal { font-size: 1.5em; margin-right: 10px; }
+    </style>
+</head>
+<body>
+<h1 th:text="'🏆 Ranking: ' + ${competition.name}">Ranking</h1>
+
+<div th:each="player, iter : ${ranking}"
+     th:classappend="${iter.index == 0} ? 'rank-card first' : 'rank-card'">
+
+    <div style="flex-grow: 1; margin: 0 20px;">
+        <div style="background: #eee; border-radius: 10px; height: 10px; width: 100%;">
+            <div th:style="'background: #03dac6; height: 100%; border-radius: 10px; width: ' + ${player.progressPercentage} + '%;'"></div>
+        </div>
+        <small th:text="${player.progressPercentage} + '% da meta'"></small>
+    </div>
+    <div>
+        <span class="medal" th:text="${iter.index == 0 ? '🥇' : (iter.index == 1 ? '🥈' : (iter.index == 2 ? '🥉' : '🐀'))}"></span>
+        <span th:text="${player.displayName}" style="font-size: 1.1em;">Nome</span>
+    </div>
+
+    <div>
+        <span th:text="${player.totalPages} + ' pág.'">0 pág.</span>
+        <span class="points" th:text="${player.totalPoints} + ' pts'">0 pts</span>
+    </div>
+</div>
+
+<p><a href="/">⬅ Voltar para Início</a></p>
+</body>
+</html>

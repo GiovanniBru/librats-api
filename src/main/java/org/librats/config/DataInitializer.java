@@ -89,4 +89,5 @@ public class DataInitializer implements CommandLineRunner {
 
         System.out.println("✅ Dados carregados! Acesse http://localhost:8080/api/competitions/1/ranking");
     }
+
 }

@@ -2,6 +2,8 @@ package org.librats.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -42,4 +44,18 @@ public class User {
         this.password = password;
         this.email = email;
     }
+
+    @OneToMany(mappedBy = "user")
+    private List<ReadingLog> logs = new ArrayList<>(); // O nome aqui define o "getLogs()"
+
+    @ManyToMany
+    private List<Badge> badges = new ArrayList<>(); // <-- Inicialize com uma lista vazia!
+
+//    @ManyToMany
+//    @JoinTable(
+//            name = "user_badges",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "badge_id")
+//    )
+//    private List<Badge> badges;
 }

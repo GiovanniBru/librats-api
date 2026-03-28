@@ -49,8 +49,11 @@ public class CompetitionController {
 
     @GetMapping("/{id}/ranking")
     public List<RankingDTO> getRanking(@PathVariable Long id) {
-        Competition comp = competitionRepository.findById(id)
+        // 1. Opcional: Você pode manter a busca se quiser validar que a competição existe
+        competitionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Competition not found"));
-        return rankingService.getCompetitionRanking(comp);
+
+        // 2. CORREÇÃO: Chama o método certo passando o ID (que já recebemos no @PathVariable)
+        return rankingService.getRankingByCompetition(id);
     }
 }

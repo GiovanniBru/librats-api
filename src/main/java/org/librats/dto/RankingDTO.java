@@ -1,12 +1,15 @@
 package org.librats.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class RankingDTO {
     private String displayName;
     private Integer totalPoints;
-    private Long booksFinished; // Um extra para o desempate!
+    private Integer totalPages;
+    private Integer progressPercentage;
 }

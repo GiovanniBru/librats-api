@@ -46,4 +46,6 @@ public class Competition {
         this.finishBookBonus = finishBookBonus;
         this.startDate = LocalDate.now();
     }
+
+    private Integer goalPages = 1000; // Valor padrão de 1000 páginas como meta
 }

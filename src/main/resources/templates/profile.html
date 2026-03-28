@@ -15,6 +15,14 @@
 <body>
 <div class="stats-card">
     <h1 th:text="'Olá, ' + ${user.displayName}">Nome do Usuário</h1>
+    <div class="badges-section">
+    <span th:each="badge : ${user.badges}"
+          class="tag"
+          th:title="${badge.description}"
+          th:text="${badge.icon} + ' ' + ${badge.name}">
+          🏅 Badge
+    </span>
+    </div>
     <p>Você já devorou <strong th:text="${totalPages}">0</strong> páginas no total! 📖🐀</p>
 </div>
 
