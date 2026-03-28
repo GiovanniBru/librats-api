@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LibRats - Home</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f9; padding: 20px; }
+        .card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 10px; }
+        .btn { background: #6200ee; color: white; padding: 8px 12px; text-decoration: none; border-radius: 4px; }
+    </style>
+</head>
+<body>
+<h1>🐀 LibRats - Painel de Competições</h1>
+
+<div th:each="comp : ${competitions}" class="card">
+    <h2 th:text="${comp.name}">Nome da Competição</h2>
+    <p>Início: <span th:text="${comp.startDate}">00/00/00</span></p>
+    <a th:href="@{'/api/competitions/' + ${comp.id} + '/ranking'}" class="btn">Ver Ranking</a>
+</div>
+</body>
+</html>

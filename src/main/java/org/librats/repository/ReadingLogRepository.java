@@ -24,8 +24,12 @@ public interface ReadingLogRepository extends JpaRepository<ReadingLog, Long> {
     // Busca os últimos logs do usuário para sugerir livros rápidos
     List<ReadingLog> findByUserOrderByLogDateDesc(User user);
 
+    // Busca todos os logs de um usuário específico
     List<ReadingLog> findByUserIdOrderByLogDateDesc(Long userId);
 
+    // Soma todas as páginas lidas pelo usuário (Query customizada)
+    @Query("SELECT SUM(l.pagesRead) FROM ReadingLog l WHERE l.user.id = :userId")
+    Integer sumPagesByUserId(Long userId);
     /**
      * Esta consulta soma os pontos do usuário em uma competição específica.
      * Estamos usando JPQL (Java Persistence Query Language).

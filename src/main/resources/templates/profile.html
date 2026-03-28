@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Meu Perfil - LibRats</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; padding: 40px; }
+        .stats-card { background: #6200ee; color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+        table { width: 100%; background: white; border-collapse: collapse; border-radius: 8px; overflow: hidden; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #3700b3; color: white; }
+        .tag { background: #eee; padding: 2px 8px; border-radius: 10px; font-size: 0.8em; }
+    </style>
+</head>
+<body>
+<div class="stats-card">
+    <h1 th:text="'Olá, ' + ${user.displayName}">Nome do Usuário</h1>
+    <p>Você já devorou <strong th:text="${totalPages}">0</strong> páginas no total! 📖🐀</p>
+</div>
+
+<h2>📜 Histórico de Leituras</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Data</th>
+        <th>Livro</th>
+        <th>Páginas</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="log : ${logs}">
+        <td th:text="${#temporals.format(log.logDate, 'dd/MM/yyyy HH:mm')}">Data</td>
+        <td>
+            <span th:text="${log.book.title}">Livro</span>
+            <span th:if="${log.book.tags.contains('Fantasia')}" class="tag">✨ Fantasia</span>
+        </td>
+        <td th:text="${log.pagesRead}">0</td>
+        <td th:text="${log.finished ? '✅ Concluído' : '📖 Lendo'}">Status</td>
+    </tr>
+    </tbody>
+</table>
+
+<p><a href="/">⬅ Voltar para o Painel</a></p>
+</body>
+</html>

@@ -3,6 +3,8 @@ package org.librats.service;
 import org.librats.model.Book;
 import org.librats.model.ReadingLog;
 import org.librats.model.Competition;
+import org.librats.repository.BookRepository;
+import org.librats.repository.CompetitionRepository;
 import org.librats.repository.ReadingLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,22 +16,40 @@ public class ReadingLogService {
     @Autowired
     private ReadingLogRepository readingLogRepository;
 
+    @Autowired
+    private BookRepository bookRepository; // Garanta que o repository esteja injetado
+
+    @Autowired
+    private CompetitionRepository competitionRepository;
+
     public ReadingLog logReading(ReadingLog log) {
-        Competition comp = log.getCompetition();
-        Book book = log.getBook();
+        // 1. CARREGAR OS DADOS REAIS DO BANCO (O formulário só manda o ID)
+        Book book = bookRepository.findById(log.getBook().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Livro não encontrado"));
 
-        if (comp != null && book != null) {
-            int basePoints = log.getPagesRead() * comp.getPointsPerPage();
+        Competition comp = competitionRepository.findById(log.getCompetition().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Competição não encontrada"));
 
-            // Regra de Bônus: Se o livro for de "Fantasia", ganha +20% de bônus nas páginas
-            if (book.getTags() != null && book.getTags().contains("Fantasia")) {
-                basePoints = (int) (basePoints * 1.2);
-                System.out.println("✨ Bônus de Fantasia aplicado!");
-            }
+        // Atualiza o objeto log com as entidades completas
+        log.setBook(book);
+        log.setCompetition(comp);
 
-            // Você pode somar os pontos finais aqui se tiver um campo no log
-            // log.setPointsEarned(basePoints + comp.getPointsPerSession());
+        // 2. AGORA AS VALIDAÇÕES FUNCIONAM
+        if (log.getPagesRead() <= 0) {
+            throw new IllegalArgumentException("Você precisa ler pelo menos uma página!");
         }
+
+        if (book.getPages() != null && log.getPagesRead() > book.getPages()) {
+            throw new IllegalArgumentException("Lido (" + log.getPagesRead() + ") excede o total do livro (" + book.getPages() + ").");
+        }
+
+        // 3. CÁLCULO DE PONTOS
+        int totalSessionPoints = (log.getPagesRead() * comp.getPointsPerPage()) + comp.getPointsPerSession();
+        if (Boolean.TRUE.equals(log.getFinished())) {
+            totalSessionPoints += comp.getCompletedBookBonus();
+        }
+
+        System.out.println("Pontos calculados: " + totalSessionPoints);
 
         return readingLogRepository.save(log);
     }
