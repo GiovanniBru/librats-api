@@ -13,6 +13,17 @@
 </head>
 <body>
 <h1 th:text="'🏆 Ranking: ' + ${competition.name}">Ranking</h1>
+<div th:if="${competition.type == 'POINTS' && competition.endDate != null}"
+     style="margin-top: 10px;">
+    <span style="background: #ffc107; color: black; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.9em;">
+        🏁 Termina em: <span th:text="${#temporals.format(competition.endDate, 'dd/MM/yyyy')}"></span>
+    </span>
+
+    <p th:if="${competition.endDate.isBefore(#temporals.createNow().toLocalDate())}"
+       style="color: #ff5252; font-weight: bold; margin-top: 10px;">
+        🚫 COMPETIÇÃO ENCERRADA! (Pontos congelados)
+    </p>
+</div>
 <div class="ranking-container" style="max-width: 800px; margin: auto; padding: 20px;">
 
     <div style="background: #6200ee; color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; text-align: center;">

@@ -2,6 +2,8 @@ package org.librats.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -34,9 +36,15 @@ public class ReadingLog {
 
     private LocalDateTime logDate;
 
+    private LocalDate date; // Se estiver como 'data' no seu código, mude o get no Service para getData()
+
     public ReadingLog() {
         this.logDate = LocalDateTime.now();
     }
 
     private Integer pointsEarned = 0; // Para salvar quantos pontos esse log rendeu
+
+    public LocalDate getDate() { return date; }
+    public Competition getCompetition() { return competition; }
+    public Integer getPagesRead() { return pagesRead; }
 }

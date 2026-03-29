@@ -37,9 +37,13 @@ public class Competition {
     private Integer pointsPerPage;
     private Integer pointsPerSession;
     private int finishBookBonus;
-    private int pointsPerDayLogged;   // Gera o getPointsPerDayLogged()
+    private Integer pointsPerDayLogged;   // Gera o getPointsPerDayLogged()
+    private Integer minPagesPerDay;
     private int completedBookBonus;   // Gera o getCompletedBookBonus()
     private Integer goalPages;
+
+    // Para sabermos qual sub-tipo de pontuação o usuário escolheu
+    private String scoreType; // "PER_SESSION", "PER_PAGE", "PER_DAY"
 
     // Este é o "elo" que estava faltando para o getParticipants() funcionar
     @ManyToMany

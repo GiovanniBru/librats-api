@@ -44,9 +44,12 @@ public class User {
         this.password = password;
         this.email = email;
     }
-
     @OneToMany(mappedBy = "user")
-    private List<ReadingLog> logs = new ArrayList<>(); // O nome aqui define o "getLogs()"
+    private List<ReadingLog> readingLogs;
+
+    public List<ReadingLog> getReadingLogs() {
+        return readingLogs;
+    }
 
     @ManyToMany
     private List<Badge> badges = new ArrayList<>(); // <-- Inicialize com uma lista vazia!

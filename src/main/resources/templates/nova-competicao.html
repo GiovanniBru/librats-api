@@ -56,7 +56,37 @@
 
         <div id="section-points" class="hidden">
             <hr>
-            <p><i>Em breve: Configurações de data e pontuação dinâmica...</i></p>
+            <h3>🔢 Configurações de Pontuação</h3>
+
+            <label>Data de Encerramento *</label>
+            <input type="date" th:field="*{endDate}" id="endDateInput" />
+
+            <label>Como será a pontuação?</label>
+            <select th:field="*{scoreType}" id="scoreTypeSelect" onchange="updateScoreOptions()">
+                <option value="PER_SESSION">Por Sessão (Leitura Finalizada)</option>
+                <option value="PER_PAGE">Por Página Lida</option>
+                <option value="PER_DAY">Por Dia que Leu (Constância)</option>
+            </select>
+
+            <div id="config-per-day" class="hidden" style="background: #fdf7ff; padding: 15px; border-radius: 8px; margin-top: 10px; border: 1px dashed #6200ee;">
+                <label>Pontos por dia lido:</label>
+                <input type="number" th:field="*{pointsPerDayLogged}" placeholder="Ex: 10" />
+
+                <label>Mínimo de páginas lidas no dia para pontuar:</label>
+                <input type="number" th:field="*{minPagesPerDay}" placeholder="Ex: 5" />
+
+                <button type="button" class="btn-config">🎯 Incluir Missões (Em breve)</button>
+            </div>
+
+            <div id="config-per-page" class="hidden">
+                <label>Pontos por cada página lida:</label>
+                <input type="number" th:field="*{pointsPerPage}" placeholder="Ex: 1" />
+            </div>
+
+            <div id="config-per-session" class="hidden">
+                <label>Pontos por cada sessão de leitura:</label>
+                <input type="number" th:field="*{pointsPerSession}" placeholder="Ex: 5" />
+            </div>
         </div>
 
         <button type="submit" class="btn-submit">Criar Competição 🚀</button>
@@ -64,6 +94,17 @@
 </div>
 
 <script>
+
+    function updateScoreOptions() {
+        const scoreType = document.getElementById('scoreTypeSelect').value;
+        const configPerDay = document.getElementById('config-per-day');
+
+        // Mostra as opções extras apenas se for "PER_DAY"
+        configPerDay.classList.toggle('hidden', scoreType !== 'PER_DAY');
+
+        // Garante que a data final seja obrigatória se for modo Maratona
+        document.getElementById('endDateInput').required = (document.getElementById('typeInput').value === 'POINTS');
+    }
     function selectType(type) {
         // Atualiza o input escondido
         document.getElementById('typeInput').value = type;
@@ -80,6 +121,22 @@
         const isSingle = type === 'SINGLE_BOOK';
         document.querySelector('[name="bookName"]').required = isSingle;
         document.querySelector('[name="goalPages"]').required = isSingle;
+
+        updateScoreOptions();
+    }
+
+    function updateScoreOptions() {
+        const scoreType = document.getElementById('scoreTypeSelect').value;
+
+        // Esconde tudo primeiro
+        document.getElementById('config-per-day').classList.add('hidden');
+        document.getElementById('config-per-page').classList.add('hidden');
+        document.getElementById('config-per-session').classList.add('hidden');
+
+        // Mostra só o escolhido
+        if(scoreType === 'PER_DAY') document.getElementById('config-per-day').classList.remove('hidden');
+        if(scoreType === 'PER_PAGE') document.getElementById('config-per-page').classList.remove('hidden');
+        if(scoreType === 'PER_SESSION') document.getElementById('config-per-session').classList.remove('hidden');
     }
 </script>
 
