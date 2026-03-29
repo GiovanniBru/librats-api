@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Desafio - LibRats</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; padding: 40px; background: #f0f2f5; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .type-selector { display: flex; gap: 15px; margin: 20px 0; }
+        .type-btn { flex: 1; padding: 15px; border: 2px solid #6200ee; border-radius: 8px; cursor: pointer; text-align: center; font-weight: bold; transition: 0.3s; }
+        .type-btn:hover { background: #f3e5f5; }
+        .type-btn.active { background: #6200ee; color: white; }
+        .hidden { display: none; }
+        input, textarea { width: 100%; padding: 12px; margin: 8px 0 15px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        .btn-config { background: #03dac6; color: black; border: none; padding: 10px; border-radius: 6px; cursor: pointer; margin-bottom: 20px; }
+        .btn-submit { background: #34a853; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; font-size: 1.1em; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🏆 Novo Desafio</h1>
+    <form th:action="@{/competicao/salvar}" th:object="${competition}" method="post">
+
+        <label>Nome da Competição *</label>
+        <input type="text" th:field="*{name}" required placeholder="Ex: Maratona Harry Potter" />
+
+        <label>Descrição (Opcional)</label>
+        <textarea th:field="*{description}" rows="2"></textarea>
+
+        <p><strong>Escolha o tipo de competição:</strong></p>
+        <div class="type-selector">
+            <div id="btn-single" class="type-btn" onclick="selectType('SINGLE_BOOK')">📖 Por 1 Livro</div>
+            <div id="btn-points" class="type-btn" onclick="selectType('POINTS')">🔢 Por Pontuação</div>
+        </div>
+
+        <input type="hidden" id="typeInput" th:field="*{type}" />
+
+        <div id="section-single" class="hidden">
+            <hr>
+            <h3>📚 Configurações do Livro</h3>
+            <label>Nome do Livro *</label>
+            <input type="text" th:field="*{bookName}" placeholder="Ex: O Hobbit" />
+
+            <label>Autor</label>
+            <input type="text" th:field="*{bookAuthor}" />
+
+            <label>Total de Páginas *</label>
+            <input type="number" th:field="*{goalPages}" />
+
+            <label>Descrição do Livro</label>
+            <textarea th:field="*{bookDescription}"></textarea>
+
+            <button type="button" class="btn-config">⚙️ Mais configurações (Em breve)</button>
+        </div>
+
+        <div id="section-points" class="hidden">
+            <hr>
+            <p><i>Em breve: Configurações de data e pontuação dinâmica...</i></p>
+        </div>
+
+        <button type="submit" class="btn-submit">Criar Competição 🚀</button>
+    </form>
+</div>
+
+<script>
+    function selectType(type) {
+        // Atualiza o input escondido
+        document.getElementById('typeInput').value = type;
+
+        // Gerencia o visual dos botões
+        document.getElementById('btn-single').classList.toggle('active', type === 'SINGLE_BOOK');
+        document.getElementById('btn-points').classList.toggle('active', type === 'POINTS');
+
+        // Mostra/Esconde as seções
+        document.getElementById('section-single').classList.toggle('hidden', type !== 'SINGLE_BOOK');
+        document.getElementById('section-points').classList.toggle('hidden', type !== 'POINTS');
+
+        // Torna os campos do livro obrigatórios apenas se o tipo for SINGLE_BOOK
+        const isSingle = type === 'SINGLE_BOOK';
+        document.querySelector('[name="bookName"]').required = isSingle;
+        document.querySelector('[name="goalPages"]').required = isSingle;
+    }
+</script>
+
+</body>
+</html>

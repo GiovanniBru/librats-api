@@ -26,10 +26,11 @@ public class WebController {
     private CompetitionRepository competitionRepository;
 
     @GetMapping("/")
-    public String home(Model model) {
-        // Passamos a lista de competições para a tela
-        model.addAttribute("competitions", competitionRepository.findAll());
-        return "index"; // Isso vai procurar um arquivo chamado index.html
+    public String index(Model model) {
+        // Busca todas as competições do banco em vez de uma só
+        List<Competition> competicoes = competitionRepository.findAll();
+        model.addAttribute("competitions", competicoes);
+        return "index";
     }
 
     @Autowired

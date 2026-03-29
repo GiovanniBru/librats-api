@@ -15,17 +15,31 @@ public class Competition {
     private Long id;
 
     private String name;
+
+    @Column(length = 2000)
     private String description;
+
+    private String type; // "SINGLE_BOOK" ou "POINTS"
+
+    @Column(length = 500)
+    private String bookName;
+
+    @Column(columnDefinition = "TEXT")
+    private String bookDescription;
+
+    @Column(length = 500)
+    private String bookAuthor;
 
     private LocalDate startDate;
     private LocalDate endDate; // Pode ser null para "sem data de término"
 
     // Regras básicas
-    private int pointsPerPage;
-    private int pointsPerSession;
+    private Integer pointsPerPage;
+    private Integer pointsPerSession;
     private int finishBookBonus;
     private int pointsPerDayLogged;   // Gera o getPointsPerDayLogged()
     private int completedBookBonus;   // Gera o getCompletedBookBonus()
+    private Integer goalPages;
 
     // Este é o "elo" que estava faltando para o getParticipants() funcionar
     @ManyToMany
@@ -46,6 +60,4 @@ public class Competition {
         this.finishBookBonus = finishBookBonus;
         this.startDate = LocalDate.now();
     }
-
-    private Integer goalPages = 1000; // Valor padrão de 1000 páginas como meta
 }

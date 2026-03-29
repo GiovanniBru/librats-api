@@ -10,12 +10,42 @@
     </style>
 </head>
 <body>
+
 <h1>🐀 LibRats - Painel de Competições</h1>
 
-<div th:each="comp : ${competitions}" class="card">
-    <h2 th:text="${comp.name}">Nome da Competição</h2>
-    <p>Início: <span th:text="${comp.startDate}">00/00/00</span></p>
-    <a th:href="@{'/api/competitions/' + ${comp.id} + '/ranking'}" class="btn">Ver Ranking</a>
+<div th:each="comp : ${competitions}" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-top: 5px solid #6200ee;">
+    <h3 th:text="${comp.name}" style="margin-top: 0;">Nome da Competição</h3>
+
+    <div th:if="${comp.type == 'SINGLE_BOOK'}" style="background: #f9f9f9; padding: 10px; border-radius: 5px; margin-bottom: 15px; border-left: 3px solid #03dac6;">
+        <p style="margin: 0; font-size: 0.9em;">📖 <strong>Livro:</strong> <span th:text="${comp.bookName}"></span></p>
+        <p style="margin: 0; font-size: 0.8em; color: #666;">Meta: <span th:text="${comp.goalPages}"></span> páginas</p>
+    </div>
+
+    <p th:text="${comp.description}" style="font-size: 0.9em; color: #444;"></p>
+
+    <div style="display: flex; gap: 10px;">
+        <a th:href="@{/competicao/{id}/ranking(id=${comp.id})}" style="color: #6200ee; font-weight: bold; text-decoration: none;">🏆 Ver Ranking</a>
+    </div>
 </div>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+
+    <div th:each="comp : ${competitions}" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-top: 5px solid #6200ee;">
+        <h3 th:text="${comp.name}">Nome da Competição</h3>
+        <p th:text="'Meta: ' + ${comp.goalPages} + ' páginas'"></p>
+
+        <div style="display: flex; gap: 10px;">
+            <a th:href="@{/competicao/{id}/ranking(id=${comp.id})}" style="color: #6200ee; font-weight: bold; text-decoration: none;">🏆 Ver Ranking</a>
+            <a th:href="@{/competicao/{id}/join(id=${comp.id})}" style="color: #03dac6; font-weight: bold; text-decoration: none;">➕ Participar</a>
+        </div>
+    </div>
+
+</div>
+<header style="display: flex; justify-content: space-between; align-items: center; background: #6200ee; color: white; padding: 10px 20px; border-radius: 8px; margin-bottom: 20px;">
+    <h2 style="margin: 0;">🐀 LibRats</h2>
+
+    <a th:href="@{/competicao/nova}" style="background: #03dac6; color: #000; text-decoration: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; font-size: 0.9em;">
+        + Criar Competição
+    </a>
+</header>
 </body>
 </html>

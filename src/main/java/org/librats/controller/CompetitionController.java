@@ -11,11 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/competitions")
+@Controller
 public class CompetitionController {
 
     @Autowired
@@ -48,12 +49,32 @@ public class CompetitionController {
     }
 
     @GetMapping("/{id}/ranking")
-    public List<RankingDTO> getRanking(@PathVariable Long id) {
-        // 1. Opcional: Você pode manter a busca se quiser validar que a competição existe
-        competitionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Competition not found"));
+    public String verRanking(@PathVariable Long id, Model model) {
+        // 1. Busca a competição para mostrar os detalhes no topo (Título, Autor, etc)
+        Competition comp = competitionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Competição não encontrada"));
 
-        // 2. CORREÇÃO: Chama o método certo passando o ID (que já recebemos no @PathVariable)
-        return rankingService.getRankingByCompetition(id);
+        // 2. Busca os dados do ranking processados pelo Service
+        List<RankingDTO> ranking = rankingService.getRankingByCompetition(id);
+
+        model.addAttribute("competition", comp);
+        model.addAttribute("ranking", ranking);
+
+        return "ranking"; // Nome do seu arquivo ranking.html
+    }
+
+    @GetMapping("/competicao/nova")
+    public String mostrarFormulario(Model model) {
+        model.addAttribute("competition", new Competition());
+        return "nova-competicao";
+    }
+
+    @PostMapping("/competicao/salvar")
+    public String salvar(@ModelAttribute Competition competition) {
+        // Se o usuário não escolheu tipo, podemos definir um padrão
+        if (competition.getType() == null) competition.setType("SINGLE_BOOK");
+
+        competitionRepository.save(competition);
+        return "redirect:/";
     }
 }

@@ -21,8 +21,8 @@ public class RankingService {
         Competition comp = competitionRepository.findById(competitionId)
                 .orElseThrow(() -> new RuntimeException("Competição não encontrada"));
 
-        // Definimos uma meta padrão (ex: 1000) caso o campo esteja nulo no banco
-        int goal = (comp.getGoalPages() != null) ? comp.getGoalPages() : 1000;
+        // USAR A META CADASTRADA: Se for SINGLE_BOOK, usa o total de páginas do livro
+        int goal = (comp.getGoalPages() != null && comp.getGoalPages() > 0) ? comp.getGoalPages() : 1000;
 
         return comp.getParticipants().stream()
                 .map(user -> {
