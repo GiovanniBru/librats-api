@@ -14,6 +14,27 @@
 <h1>🐀 LibRats - Painel de Competições</h1>
 
 <div th:each="comp : ${competitions}" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-top: 5px solid #6200ee;">
+    <div style="margin-bottom: 10px; display: flex; gap: 5px; flex-wrap: wrap;">
+    <span th:if="${comp.scoreType == 'PER_DAY'}"
+          style="background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold;">
+        🔥 Foco em Constância
+    </span>
+        <span th:if="${comp.scoreType == 'PER_PAGE'}"
+              style="background: #e3f2fd; color: #1565c0; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold;">
+        📖 Por Página
+    </span>
+        <span th:if="${comp.scoreType == 'PER_SESSION'}"
+              style="background: #fff3e0; color: #ef6c00; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold;">
+        ✍️ Por Sessão
+    </span>
+
+        <span th:if="${comp.endDate != null}"
+              th:with="daysLeft=${T(java.time.temporal.ChronoUnit).DAYS.between(T(java.time.LocalDate).now(), comp.endDate)}"
+              th:style="'background:' + (${daysLeft <= 3} ? '#ffebee' : '#f5f5f5') + '; color:' + (${daysLeft <= 3} ? '#c62828' : '#616161') + '; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold; border: 1px solid #ddd;'">
+        ⏳ <span th:text="${daysLeft > 0 ? daysLeft + ' dias restantes' : 'Encerra hoje!'}"></span>
+    </span>
+    </div>
+
     <h3 th:text="${comp.name}" style="margin-top: 0;">Nome da Competição</h3>
 
     <div th:if="${comp.type == 'SINGLE_BOOK'}" style="background: #f9f9f9; padding: 10px; border-radius: 5px; margin-bottom: 15px; border-left: 3px solid #03dac6;">
@@ -22,6 +43,24 @@
     </div>
 
     <p th:text="${comp.description}" style="font-size: 0.9em; color: #444;"></p>
+
+    <div style="background: #f8f9fa; padding: 8px; border-radius: 6px; margin-top: 10px; border-left: 3px solid #6200ee; font-size: 0.85em; color: #555;">
+    <span th:if="${comp.scoreType == 'PER_DAY'}">
+        🎯 <strong>Meta Diária:</strong> Leia no mínimo <span th:text="${comp.minPagesPerDay}"></span> páginas para ganhar <span th:text="${comp.pointsPerDayLogged}"></span> pontos.
+    </span>
+
+        <span th:if="${comp.scoreType == 'PER_PAGE'}">
+        📈 <strong>Regra:</strong> Cada página lida vale <span th:text="${comp.pointsPerPage}"></span> ponto(s).
+    </span>
+
+        <span th:if="${comp.scoreType == 'PER_SESSION'}">
+        ✅ <strong>Regra:</strong> Ganhe <span th:text="${comp.pointsPerSession}"></span> pontos para cada registro de leitura.
+    </span>
+
+        <span th:if="${comp.type == 'SINGLE_BOOK'}">
+        🏁 <strong>Objetivo:</strong> Ler o livro completo para atingir 100%.
+    </span>
+    </div>
 
     <div style="display: flex; gap: 10px;">
         <a th:href="@{/competicao/{id}/ranking(id=${comp.id})}" style="color: #6200ee; font-weight: bold; text-decoration: none;">🏆 Ver Ranking</a>
