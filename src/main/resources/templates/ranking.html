@@ -38,6 +38,52 @@
                 Meta: <span th:text="${competition.goalPages}"></span> páginas
             </span>
         </div>
+
+        <div th:if="${ranking.size() >= 1}" style="display: flex; justify-content: center; align-items: flex-end; gap: 20px; margin: 40px 0; padding-bottom: 20px; border-bottom: 2px solid #eee;">
+
+            <div th:if="${ranking.size() >= 2}" style="text-align: center; width: 100px;">
+                <div style="width: 70px; height: 70px; border-radius: 50%; border: 4px solid #C0C0C0; margin: 0 auto 10px; overflow: hidden; background: #f0f0f0;">
+                    <img src="https://img.icons8.com/color/96/mouse.png" style="width: 100%; height: 100%; object-fit: cover;"/>
+                </div>
+                <div style="font-weight: bold; font-size: 0.9em;" th:text="${ranking[1].displayName}">Rato Prata</div>
+                <div style="color: #6200ee; font-weight: bold;" th:text="${ranking[1].totalPoints} + ' pts'">0 pts</div>
+                <span style="font-size: 1.2em;">🥈</span>
+            </div>
+
+            <div style="text-align: center; width: 120px; transform: translateY(-20px);">
+                <div style="width: 90px; height: 90px; border-radius: 50%; border: 5px solid #FFD700; margin: 0 auto 10px; overflow: hidden; background: #f0f0f0; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);">
+                    <img src="https://img.icons8.com/color/96/mouse.png" style="width: 100%; height: 100%; object-fit: cover;"/>
+                </div>
+                <div style="font-weight: bold; font-size: 1.1em;" th:text="${ranking[0].displayName}">Rato Ouro</div>
+                <div style="color: #6200ee; font-weight: bold; font-size: 1.1em;" th:text="${ranking[0].totalPoints} + ' pts'">0 pts</div>
+                <span style="font-size: 1.8em;">🥇</span>
+            </div>
+
+            <div th:if="${ranking.size() >= 3}" style="text-align: center; width: 100px;">
+                <div style="width: 70px; height: 70px; border-radius: 50%; border: 4px solid #CD7F32; margin: 0 auto 10px; overflow: hidden; background: #f0f0f0;">
+                    <img src="https://img.icons8.com/color/96/mouse.png" style="width: 100%; height: 100%; object-fit: cover;"/>
+                </div>
+                <div style="font-weight: bold; font-size: 0.9em;" th:text="${ranking[2].displayName}">Rato Bronze</div>
+                <div style="color: #6200ee; font-weight: bold;" th:text="${ranking[2].totalPoints} + ' pts'">0 pts</div>
+                <span style="font-size: 1.2em;">🥉</span>
+            </div>
+        </div>
+
+        <div th:each="player, iterStat : ${ranking}" th:if="${iterStat.index >= 3}"
+             style="display: flex; align-items: center; padding: 12px 20px; background: white; border-radius: 12px; margin-bottom: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+
+            <span th:text="${iterStat.count}" style="width: 25px; color: #999; font-weight: bold;">4</span>
+
+            <div style="width: 35px; height: 35px; border-radius: 50%; overflow: hidden; background: #f0f0f0; margin-right: 15px;">
+                <img src="https://img.icons8.com/color/48/mouse.png" style="width: 100%; height: 100%;"/>
+            </div>
+
+            <div style="flex-grow: 1; font-weight: 500;" th:text="${player.displayName}">Nome do Rato</div>
+
+            <div style="text-align: right; font-weight: bold; color: #6200ee;" th:text="${player.totalPoints} + ' pts'">
+                0 pts
+            </div>
+        </div>
     </div>
 
     <div th:each="player : ${ranking}" class="rank-card" style="...">
