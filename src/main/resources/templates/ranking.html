@@ -9,6 +9,16 @@
         .first { border-left: 5px solid #ffd700; background: #fffdf0; } /* Dourado para o 1º */
         .points { font-weight: bold; color: #6200ee; font-size: 1.2em; }
         .medal { font-size: 1.5em; margin-right: 10px; }
+        @keyframes pulseGold {
+            0% { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
+            50% { box-shadow: 0 4px 25px rgba(255, 215, 0, 0.6); }
+            100% { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
+        }
+
+        /* Aplique esta animação na classe .gold que criamos na última vez */
+        .gold .div-do-avatar { /* Ajuste conforme sua estrutura de div */
+            animation: pulseGold 2s infinite ease-in-out;
+        }
     </style>
     <style>
         /* Animação para o pódio subir */
@@ -47,6 +57,11 @@
        style="color: #ff5252; font-weight: bold; margin-top: 10px;">
         🚫 COMPETIÇÃO ENCERRADA! (Pontos congelados)
     </p>
+</div>
+<div style="max-width: 800px; margin: 20px auto 10px auto;">
+    <a href="/" style="text-decoration: none; color: #6200ee; font-weight: bold; display: flex; align-items: center; gap: 5px; font-size: 0.9em;">
+        <span>⬅️</span> Voltar para o Início
+    </a>
 </div>
 <div class="ranking-container" style="max-width: 800px; margin: auto; padding: 20px;">
 
